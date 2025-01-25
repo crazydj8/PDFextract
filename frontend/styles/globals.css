@@ -1,0 +1,178 @@
+/* Reset some default browser styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set a default font and background color */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Style the main container */
+div {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Style the heading */
+h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #007BFF; /* Add a primary color */
+}
+
+/* Style the paragraph */
+p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: #555; /* Add a slightly darker color */
+  margin-bottom: 20px;
+}
+
+/* Style the input fields */
+input[type="text"],
+input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Style the submit button */
+button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #007BFF; /* Add a primary color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: #0056b3; /* Add a darker shade for hover effect */
+}
+
+/* Style the ask button */
+.ask-button {
+  background-color: #28a745; /* Green color */
+}
+
+.ask-button:hover {
+  background-color: #218838; /* Darker green for hover effect */
+}
+
+/* Style the go back button */
+.gobackbutton {
+  background-color: #a72828; /* Green color */
+}
+
+.gobackbutton:hover {
+  background-color: #882121; /* Darker green for hover effect */
+}
+
+/* Style the link */
+a {
+  color: #007BFF; /* Add a primary color */
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Style the small text */
+.small-text {
+  font-size: 0.8em;
+  color: #777; /* Add a lighter color */
+}
+
+/* Overlay styles */
+.overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.overlay button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.overlay button:hover {
+  background-color: #0056b3;
+}
+
+.overlay h2 {
+  margin-bottom: 20px;
+}
+
+.overlay select {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #333;
+  color: #fff;
+}
+
+.overlay .content {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 4px;
+}
+
+.overlay pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: #fff;
+}
+
+.overlay p {
+  color: #fff;
+}
+
+/* Add vertical space between buttons */
+button + button {
+  margin-top: 10px;
+}
+
+/* Style the error text */
+.error-text {
+  color: red;
+  font-size: 0.9em;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
