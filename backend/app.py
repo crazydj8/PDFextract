@@ -15,7 +15,7 @@ CORS(app)
 result = {}
 llm_instance = None  # Global variable to store the LLM instance
 
-@app.route('/upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def upload_pdf():
     global llm_instance, result
 
@@ -39,7 +39,7 @@ def upload_pdf():
 
     return jsonify(result), 200
 
-@app.route('/ask', methods=['POST'])
+@app.route('/api/ask', methods=['POST'])
 def ask_question():
     global llm_instance  # Use the global variable
 
@@ -59,11 +59,11 @@ def ask_question():
 
     return jsonify(answer=answer["content"]), 200
 
-@app.route('/extracted_text', methods=['GET'])
+@app.route('/api/extracted_text', methods=['GET'])
 def get_extracted_text():
     return jsonify(extracted_text=result['text']), 200
 
-@app.route('/metadata', methods=['GET'])
+@app.route('/api/metadata', methods=['GET'])
 def get_metadata():
     return jsonify(metadata=result['metadata']), 200
 
