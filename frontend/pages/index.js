@@ -50,8 +50,12 @@ const Home = () => {
         }
     };
 
-    const handleGoBack = () => {
+    const handleGoBack = async () => {
+        await fetch('/api/clear_session', {
+            method: 'POST',
+        });
         setInvalidApiKeyError('');
+        router.push('/');
     };
 
     return (

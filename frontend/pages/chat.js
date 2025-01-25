@@ -12,6 +12,7 @@ const Chat = () => {
     const [metadata, setMetadata] = useState({});
     const [selectedPage, setSelectedPage] = useState('');
     const [rateLimitError, setRateLimitError] = useState('');
+    const [loading, setLoading] = useState(false); // Add loading state
 
     useEffect(() => {
         if (!apiKey) {
@@ -21,6 +22,7 @@ const Chat = () => {
 
     const handleQuestionSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true); // Set loading to true when the request starts
         setRateLimitError(''); // Clear previous error message
         const response = await fetch('/api/ask', {
             method: 'POST',
@@ -29,17 +31,22 @@ const Chat = () => {
             },
             body: JSON.stringify({ question }),
         });
-    
+
         const data = await response.json();
         if (response.status === 429) {
-            setRateLimitError("Error 429, you have been rate limited, try after a few seconds");
+            setRateLimitError(data.error);
+            setLoading(false); // Set loading to false when the request ends
             return;
         }
-    
+
         setAnswer(data.answer);
+        setLoading(false); // Set loading to false when the request ends
     };
 
-    const handleGoBack = () => {
+    const handleGoBack = async () => {
+        await fetch('/api/clear_session', {
+            method: 'POST',
+        });
         router.push('/');
     };
 
@@ -83,12 +90,13 @@ const Chat = () => {
                     required
                 />
                 {rateLimitError && <p className="error-text">{rateLimitError}</p>}
-                <button type="submit" className="ask-button">Ask</button>
+                <button type="submit" className="ask-button" disabled={loading}>Ask</button>
             </form>
+            {loading && <LoadingAnimation />} {/* Show loading animation when loading */}
             {answer && <p>Answer: {answer}</p>}
             <button onClick={() => handleShowOverlay('text')}>Show Extracted Text</button>
             <button onClick={() => handleShowOverlay('metadata')}>Show Metadata</button>
-            <button className="gobackbutton" onClick={handleGoBack}>Go Back to Home</button>
+            <button className="gobackbutton" onClick={handleGoBack}>Go Back to Index</button>
 
             {showOverlay && (
                 <div className="overlay">
@@ -118,5 +126,13 @@ const Chat = () => {
         </div>
     );
 };
+
+const LoadingAnimation = () => (
+    <div className="loading-dots">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+);
 
 export default Chat;
