@@ -1,7 +1,8 @@
 import os
 import sys
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
+from flask_session import Session
 
 # Add the backend directory to the Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -12,13 +13,13 @@ from modules.llm import LLM
 app = Flask(__name__)
 CORS(app)
 
-result = {}
-llm_instance = None  # Global variable to store the LLM instance
+# Configure session
+app.config['SECRET_KEY'] = os.urandom(24)
+app.config['SESSION_TYPE'] = 'filesystem'
+Session(app)
 
 @app.route('/api/upload', methods=['POST'])
 def upload_pdf():
-    global llm_instance, result
-
     if 'pdf' not in request.files:
         return jsonify(error="No PDF file provided"), 400
 
@@ -29,22 +30,24 @@ def upload_pdf():
     result = pdf_extractor.extract_pdf_data(file_stream)
 
     if not result['text_found']:
+        session['metadata'] = result['metadata']
         return jsonify(metadata=result['metadata']), 200
 
-    # Create an LLM instance and generate embeddings
-    try:
-        llm_instance = LLM(result, api_key)
-    except ValueError as e:
-        return jsonify(error=str(e)), 400
+    # Store the extracted text and API key in the session
+    session['result'] = result
+    session['api_key'] = api_key
 
     return jsonify(result), 200
 
 @app.route('/api/ask', methods=['POST'])
 def ask_question():
-    global llm_instance  # Use the global variable
+    result = session.get('result')
+    api_key = session.get('api_key')
 
-    if not llm_instance:
+    if not result or not api_key:
         return jsonify(error="LLM instance not initialized"), 400
+
+    llm_instance = LLM(result, api_key)
 
     data = request.get_json()
     question = data.get('question')
@@ -61,11 +64,17 @@ def ask_question():
 
 @app.route('/api/extracted_text', methods=['GET'])
 def get_extracted_text():
+    result = session.get('result')
+    if not result:
+        return jsonify(error="No extracted text found"), 400
     return jsonify(extracted_text=result['text']), 200
 
 @app.route('/api/metadata', methods=['GET'])
 def get_metadata():
-    return jsonify(metadata=result['metadata']), 200
+    metadata = session.get('metadata')
+    if not metadata:
+        return jsonify(error="No metadata found"), 400
+    return jsonify(metadata=metadata), 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
