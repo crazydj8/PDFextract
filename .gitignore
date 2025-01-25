@@ -39,6 +39,7 @@ build/
 
 # Python
 __pycache__/
+flask_session
 
 # Flask
 instance/
