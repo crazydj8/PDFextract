@@ -1,6 +1,11 @@
 import os
+import sys
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
+# Add the backend directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from modules.pdfextractor import pdf_extractor
 from modules.llm import LLM
 
