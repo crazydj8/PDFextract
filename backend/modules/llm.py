@@ -1,8 +1,7 @@
 import os
 import json
-import requests
-import time
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_mistralai import ChatMistralAI, MistralAIEmbeddings
 from langchain_core.vectorstores import InMemoryVectorStore
 
@@ -52,7 +51,6 @@ class LLM():
         try:
             resp = self.model.invoke(prompt)
             resp_json = json.loads(resp.model_dump_json())
-            print(resp)
             return resp_json
         except Exception as e:
             if hasattr(e, 'response') and e.response.status_code == 429:
