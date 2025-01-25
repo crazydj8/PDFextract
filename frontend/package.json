@@ -1,5 +1,4 @@
 {
-  "proxy": "http://localhost:5000",
   "name": "my-vercel-app",
   "version": "1.0.0",
   "description": "A Next.js frontend and Flask backend application hosted on Vercel.",
